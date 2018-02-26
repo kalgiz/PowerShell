@@ -1345,9 +1345,12 @@ try {
             ($observed.OsFreeVirtualMemory -gt 0) | Should Be $true
         }
 
-        It "(special case) Test for property = OsLocalDateTime" -Pending:$true {
+        It "(special case) Test for property = OsLocalDateTime" {
+            $startTestTime = Get-Date
             $computerInfo = Get-ComputerInfo
-            $computerInfo | Should BeOfType "ComputerInfo"
+            $endTestTime = Get-Date
+            ($computerInfo.OsLocalDateTime -gt $startTestTime) | Should -Be $true
+            ($computerInfo.OsLocalDateTime -lt $endTestTime) | Should -Be $true
         }
 
         It "(special case) Test for property = OsMaxNumberOfProcesses" {
