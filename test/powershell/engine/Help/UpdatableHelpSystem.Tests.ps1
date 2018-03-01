@@ -332,7 +332,7 @@ Describe "Validate 'Save-Help -DestinationPath for one PowerShell Core modules."
     AfterAll {
         $ProgressPreference = $SavedProgressPreference
     }
-    RunSaveHelpTests -tag "CI" -Pending
+    RunSaveHelpTests -tag "CI"
 }
 
 Describe "Validate 'Save-Help -DestinationPath for all PowerShell Core modules." -Tags @('Feature', 'RequireAdminOnWindows') {
