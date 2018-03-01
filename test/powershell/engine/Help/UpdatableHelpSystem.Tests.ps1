@@ -343,5 +343,5 @@ Describe "Validate 'Save-Help -DestinationPath for all PowerShell Core modules."
     AfterAll {
         $ProgressPreference = $SavedProgressPreference
     }
-    RunSaveHelpTests -tag "Feature"
+    RunSaveHelpTests -tag "CI"
 }
