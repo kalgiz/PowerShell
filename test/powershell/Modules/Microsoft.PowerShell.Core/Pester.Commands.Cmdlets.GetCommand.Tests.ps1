@@ -22,7 +22,7 @@ Describe "Tests Get-Command with relative paths and wildcards" -Tag "CI" {
         $pathName = $pathName.Substring($driveOffset + 1)
         $result = Get-Command -Name $pathName
         $result | Should -Not -BeNullOrEmpty
-        $result.Name | Should -Be WildCardCommandA.exe
+        $result.Name | Should -BeExactly 'WildCardCommandA.exe'
     }
 
     It "Test wildcard with relative directory path" {
@@ -30,7 +30,7 @@ Describe "Tests Get-Command with relative paths and wildcards" -Tag "CI" {
         $result = Get-Command -Name .\WildCardCommandA*
         pop-location
         $result | Should -Not -BeNullOrEmpty
-        $result | Should -Be WildCardCommandA.exe
+        $result | Should -BeExactly 'WildCardCommandA.exe'
     }
 
     It "Test with PowerShell wildcard and relative path" {
@@ -39,12 +39,12 @@ Describe "Tests Get-Command with relative paths and wildcards" -Tag "CI" {
         # This should use the wildcard to find WildCardCommandA.exe
         $result = Get-Command -Name .\WildCardCommand[A].exe
         $result | Should -Not -BeNullOrEmpty
-        $result | Should -Be WildCardCommandA.exe
+        $result | Should -BeExactly 'WildCardCommandA.exe'
 
         # This should find the file WildCardCommand[B].exe
         $result = Get-Command -Name .\WildCardCommand[B].exe
         $result | Should -Not -BeNullOrEmpty
-        $result | Should -Be WildCardCommand[B].exe
+        $result | Should -BeExactly 'WildCardCommand[B].exe'
 
         Pop-Location
     }

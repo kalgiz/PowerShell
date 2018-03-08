@@ -70,11 +70,11 @@ Describe "Remote import-module tests" -Tags 'Feature','RequireAdminOnWindows' {
         }
         $importModuleCommand.$parameter = $value
         if ($parameter -eq "FullyQualifiedName") {
-            $importModuleCommand.FullyQualifiedName.Count | Should -BeExactly 2
+            $importModuleCommand.FullyQualifiedName.Count | Should -Be 2
             $importModuleCommand.FullyQualifiedName | Should -BeOfType "Microsoft.PowerShell.Commands.ModuleSpecification"
-            $importModuleCommand.FullyQualifiedName[0].Name | Should -Be "foo"
+            $importModuleCommand.FullyQualifiedName[0].Name | Should -BeExactly "foo"
             $importModuleCommand.FullyQualifiedName[0].RequiredVersion | Should -Be "0.0"
-            $importModuleCommand.FullyQualifiedName[1].Name | Should -Be "bar"
+            $importModuleCommand.FullyQualifiedName[1].Name | Should -BeExactly "bar"
             $importModuleCommand.FullyQualifiedName[1].RequiredVersion | Should -Be "1.1"
         } else {
             $importModuleCommand.$parameter | Should -BeExactly $value
@@ -105,7 +105,7 @@ Describe "Remote import-module tests" -Tags 'Feature','RequireAdminOnWindows' {
             $module.Name | Should -BeExactly "TestImport"
 
             # generated proxy module always uses 1.0
-            $module.Version | Should -BeExactly "1.0"
+            $module.Version | Should -Be "1.0"
 
             test-hello | Should -BeExactly "world"
         }

@@ -128,7 +128,7 @@ try
 
                     $Result = Get-PSSessionConfiguration
 
-                    $Result.Name -contains $endpointName | Should -Be $true
+                    $Result.Name -contains $endpointName | Should -BeTrue
                     $Result.PSVersion | Should -BeExactly $expectedPSVersion
                 }
 
@@ -136,7 +136,7 @@ try
 
                     $Result = Get-PSSessionConfiguration -Name $endpointName
 
-                    $Result.Name | Should -Be $endpointName
+                    $Result.Name | Should -BeExactly $endpointName
                     $Result.PSVersion | Should -BeExactly $expectedPSVersion
                 }
 
@@ -146,7 +146,7 @@ try
 
                     $Result = Get-PSSessionConfiguration -Name $endpointWildcard
 
-                    $Result.Name -contains $endpointName | Should -Be $true
+                    $Result.Name -contains $endpointName | Should -BeTrue
                     $Result.PSVersion | Should -BeExactly $expectedPSVersion
                 }
 
@@ -159,7 +159,7 @@ try
                     }
                     catch
                     {
-                        $_.FullyQualifiedErrorId | Should -Be "Microsoft.PowerShell.Commands.WriteErrorException"
+                        $_.FullyQualifiedErrorId | Should -BeExactly "Microsoft.PowerShell.Commands.WriteErrorException"
                     }
                 }
             }
@@ -209,8 +209,8 @@ try
 
                         UnregisterPSSessionConfiguration -Name $SessionConfigName
 
-                        $TestConfigStateBeforeChange | Should -Be "$InitialSessionStateEnabled"
-                        $TestConfigStateAfterChange | Should -Be "$FinalSessionStateEnabled"
+                        $TestConfigStateBeforeChange | Should -BeExactly "$InitialSessionStateEnabled"
+                        $TestConfigStateAfterChange | Should -BeExactly "$FinalSessionStateEnabled"
                     }
                 }
 
@@ -365,7 +365,7 @@ try
                                 $sn = $null
                             }
                         }
-                        $Result.Output | Should -Be $ExpectedOutput
+                        $Result.Output | Should -BeExactly $ExpectedOutput
                         $Result.Error | Should -BeNullOrEmpty
                     }
 
@@ -492,10 +492,10 @@ namespace PowershellTestConfigNamespace
                     Register-PSSessionConfiguration -Name $TestSessionConfigName -path $LocalConfigFilePath -MaximumReceivedObjectSizeMB $psmaximumreceivedobjectsizemb -MaximumReceivedDataSizePerCommandMB $psmaximumreceiveddatasizepercommandmb -UseSharedProcess:$UseSharedProcess -ThreadOptions $pssessionthreadoptions
                     $Result = [PSObject]@{Session = Get-PSSessionConfiguration -Name $TestSessionConfigName; Culture = (Get-Item WSMan:\localhost\Plugin\$endpointName\lang -ea SilentlyContinue).value}
 
-                    $Result.Session.Name | Should -Be $TestSessionConfigName
-                    $Result.Session.SessionType | Should -Be "Default"
+                    $Result.Session.Name | Should -BeExactly $TestSessionConfigName
+                    $Result.Session.SessionType | Should -BeExactly "Default"
                     $Result.Session.PSVersion | Should -BeExactly $expectedPSVersion
-                    $Result.Session.Enabled | Should -Be $true
+                    $Result.Session.Enabled | Should -BeTrue
                     $Result.Session.lang | Should -Be $Result.Culture
                     $Result.Session.pssessionthreadoptions | Should -Be $pssessionthreadoptions
                     $Result.Session.psmaximumreceivedobjectsizemb | Should -Be $psmaximumreceivedobjectsizemb
@@ -508,7 +508,7 @@ namespace PowershellTestConfigNamespace
                     Register-PSSessionConfiguration -Name $TestSessionConfigName -PSVersion 5.1
                     $Session = Get-PSSessionConfiguration -Name $TestSessionConfigName
 
-                    $Session.Name | Should -Be $TestSessionConfigName
+                    $Session.Name | Should -BeExactly $TestSessionConfigName
                     $Session.PSVersion | Should -BeExactly 5.1
                 }
 
@@ -571,7 +571,7 @@ namespace PowershellTestConfigNamespace
 
                     $Result.Session.Name | Should -Be $TestSessionConfigName
                     $Result.Session.PSVersion | Should -BeExactly $expectedPSVersion
-                    $Result.Session.Enabled | Should -Be $true
+                    $Result.Session.Enabled | Should -BeTrue
                     $Result.Session.lang | Should -Be $result.Culture
                     $Result.Session.pssessionthreadoptions | Should -Be $pssessionthreadoptions
                     $Result.Session.psmaximumreceivedobjectsizemb | Should -Be $psmaximumreceivedobjectsizemb
@@ -642,11 +642,11 @@ namespace PowershellTestConfigNamespace
             }
 
             $resultContent = invoke-expression ($result)
-            $resultContent.GetType().ToString() | Should -Be "System.Collections.Hashtable"
+            $resultContent.GetType().ToString() | Should -BeExactly "System.Collections.Hashtable"
 
             # The default created hashtable in the session configuration file would have the
             # following keys which we are validating below.
-            $resultContent.ContainsKey("SessionType") -and $resultContent.ContainsKey("SchemaVersion") -and $resultContent.ContainsKey("Guid") -and $resultContent.ContainsKey("Author") | Should -Be $true
+            $resultContent.ContainsKey("SessionType") -and $resultContent.ContainsKey("SchemaVersion") -and $resultContent.ContainsKey("Guid") -and $resultContent.ContainsKey("Author") | Should -BeTrue
         }
     }
 
@@ -662,7 +662,7 @@ namespace PowershellTestConfigNamespace
             }
             catch
             {
-                $_.FullyQualifiedErrorId | Should -Be "InvalidPSSessionConfigurationFilePath,Microsoft.PowerShell.Commands.NewPSSessionConfigurationFileCommand"
+                $_.FullyQualifiedErrorId | Should -BeExactly "InvalidPSSessionConfigurationFilePath,Microsoft.PowerShell.Commands.NewPSSessionConfigurationFileCommand"
             }
         }
     }
@@ -774,7 +774,7 @@ namespace PowershellTestConfigNamespace
             }
             catch
             {
-                $_.FullyQualifiedErrorId | Should -Be "PSSessionConfigurationFileNotFound,Microsoft.PowerShell.Commands.TestPSSessionConfigurationFileCommand"
+                $_.FullyQualifiedErrorId | Should -BeExactly "PSSessionConfigurationFileNotFound,Microsoft.PowerShell.Commands.TestPSSessionConfigurationFileCommand"
             }
         }
 
@@ -783,7 +783,7 @@ namespace PowershellTestConfigNamespace
             $configFilePath = join-path $TestDrive "SamplePSSessionConfigurationFile.pssc"
             "InvalidData" | Out-File $configFilePath
 
-            Test-PSSessionConfigurationFile $configFilePath -Verbose -ErrorAction Stop | Should -Be $false
+            Test-PSSessionConfigurationFile $configFilePath -Verbose -ErrorAction Stop | Should -BeFalse
         }
 
         It "Test case verifies that the generated config file passes validation" {
@@ -862,7 +862,7 @@ namespace PowershellTestConfigNamespace
                 }
             }
 
-            $result | Should -Be $true
+            $result | Should -BeTrue
         }
     }
 }

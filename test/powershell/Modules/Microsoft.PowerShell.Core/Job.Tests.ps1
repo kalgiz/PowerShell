@@ -10,7 +10,7 @@ Describe "Job Cmdlet Tests" -Tag "CI" {
         }
         It "Start-Job produces a job object" {
             $j | Should -BeOfType "System.Management.Automation.Job"
-            $j.Name | Should -Be "My Job"
+            $j.Name | Should -BeExactly "My Job"
         }
         It "Get-Job retrieves a job object" {
             (Get-Job -Id $j.Id) | Should -BeOfType "System.Management.Automation.Job"
@@ -39,7 +39,7 @@ Describe "Job Cmdlet Tests" -Tag "CI" {
             $j = Start-Job -ScriptBlock $sb -ArgumentList "$TestDrive", 42
             Wait-job -Timeout (5 * 60) $j | Should -Be $j
             $r = Receive-Job $j
-            $r -Join "," | Should -Be "42,$TestDrive"
+            $r -Join "," | Should -BeExactly "42,$TestDrive"
         }
     }
     Context "jobs which take time" {
@@ -52,7 +52,7 @@ Describe "Job Cmdlet Tests" -Tag "CI" {
         It "Wait-Job will wait for a job" {
             $result = Wait-Job $j
             $result | Should -Be $j
-            $j.State | Should -Be "Completed"
+            $j.State | Should -BeExactly "Completed"
         }
         It "Wait-Job will timeout waiting for a job" {
             $result = Wait-Job -Timeout 2 $j
@@ -60,7 +60,7 @@ Describe "Job Cmdlet Tests" -Tag "CI" {
         }
         It "Stop-Job will stop a job" {
             Stop-Job -Id $j.Id
-            $j.State | Should -Be "Stopped"
+            $j.State | Should -BeExactly "Stopped"
         }
         It "Remove-Job will not remove a running job" {
             $id = $j.Id
@@ -130,7 +130,7 @@ Describe "Job Cmdlet Tests" -Tag "CI" {
         It "Receive-Job will retrieve partial output" {
             $result1 = GetResults $j 5 $false
             $result2 = GetResults $j 5 $false
-            CheckContent ($result1 + $result2) | Should -Be $true
+            CheckContent ($result1 + $result2) | Should -BeTrue
         }
         It "Receive-Job will retrieve partial output, including -Keep results" {
             $result1 = GetResults $j 5 $true
@@ -164,7 +164,7 @@ Describe "Debug-job test" -tag "Feature" {
         $ps.commands.clear()
         Start-Sleep 2
         $result = $ps.runspace.Debugger.GetCallStack()
-        $result.Command | Should -Be "<ScriptBlock>"
+        $result.Command | Should -BeExactly "<ScriptBlock>"
     }
 }
 
@@ -175,7 +175,7 @@ Describe "Ampersand background test" -tag "CI","Slow" {
         }
         It "Background with & produces a job object" {
             $j = Write-Output Hi &
-            $j | Should -BeOfType System.Management.Automation.Job
+            $j | Should -BeOfType 'System.Management.Automation.Job'
         }
     }
     Context "Variable tests" {
@@ -206,7 +206,7 @@ Describe "Ampersand background test" -tag "CI","Slow" {
         }
         It "starts in the current directory" {
             $j = Get-Location | Foreach-Object -MemberName Path &
-            Receive-Job -Wait $j | Should -Be ($pwd.Path)
+            Receive-Job -Wait $j | Should -BeExactly ($pwd.Path)
         }
         It "Test that output redirection is done in the background job" {
             $j = Write-Output hello > $TESTDRIVE/hello.txt &
