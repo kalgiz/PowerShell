@@ -31,9 +31,9 @@ Describe "PackageManagement Acceptance Test" -Tags "Feature" {
 
         $gpp = Get-PackageProvider
 
-        $gpp | Where-Object { $_.name -eq "NuGet" } | Should -not -BeNullOrEmpty
+        $gpp | Where-Object { $_.name -eq "NuGet" } | Should -Not -BeNullOrEmpty
 
-        $gpp | Where-Object { $_.name -eq "PowerShellGet" } | Should -not -BeNullOrEmpty
+        $gpp | Where-Object { $_.name -eq "PowerShellGet" } | Should -Not -BeNullOrEmpty
     }
 
     It "find-packageprovider PowerShellGet" {
@@ -43,31 +43,31 @@ Describe "PackageManagement Acceptance Test" -Tags "Feature" {
 
      It "install-packageprovider, Expect succeed" {
         $ipp = (install-PackageProvider -name gistprovider -force -source $InternalSource -Scope CurrentUser).name
-        $ipp -contains "gistprovider" | Should -BeTrue
+        $ipp | Should -Match "gistprovider"
     }
 
     it "Find-package"  {
         $f = Find-Package -ProviderName NuGet -Name jquery -source Nugettest
-        $f.Name -contains "jquery" | Should -BeTrue
-	}
+        $f.Name | Should -Match "jquery"
+    }
 
     it "Install-package"  {
         $i = install-Package -ProviderName NuGet -Name jquery -force -source Nugettest -Scope CurrentUser
-        $i.Name -contains "jquery" | Should -BeTrue
-	}
+        $i.Name | Should -Match "jquery"
+    }
 
     it "Get-package"  {
         $g = Get-Package -ProviderName NuGet -Name jquery
-        $g.Name -contains "jquery" | Should -BeTrue
-	}
+        $g.Name | Should -Match "jquery"
+    }
 
     it "save-package"  {
         $s = save-Package -ProviderName NuGet -Name jquery -path $TestDrive -force -source Nugettest
-        $s.Name -contains "jquery" | Should -BeTrue
-	}
+        $s.Name | Should -Match "jquery"
+    }
 
     it "uninstall-package"  {
         $u = uninstall-Package -ProviderName NuGet -Name jquery
-        $u.Name -contains "jquery" | Should -BeTrue
-	}
+        $u.Name | Should -Match "jquery"
+    }
 }
