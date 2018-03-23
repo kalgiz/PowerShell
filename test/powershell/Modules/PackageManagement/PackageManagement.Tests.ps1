@@ -31,43 +31,43 @@ Describe "PackageManagement Acceptance Test" -Tags "Feature" {
 
         $gpp = Get-PackageProvider
 
-        $gpp | Where-Object { $_.name -eq "NuGet" } | should not BeNullOrEmpty
+        $gpp | Where-Object { $_.name -eq "NuGet" } | Should -not -BeNullOrEmpty
 
-        $gpp | Where-Object { $_.name -eq "PowerShellGet" } | should not BeNullOrEmpty
+        $gpp | Where-Object { $_.name -eq "PowerShellGet" } | Should -not -BeNullOrEmpty
     }
 
     It "find-packageprovider PowerShellGet" {
         $fpp = (Find-PackageProvider -Name "PowerShellGet" -force).name
-        $fpp -contains "PowerShellGet" | should be $true
+        $fpp -contains "PowerShellGet" | Should -BeTrue
     }
 
      It "install-packageprovider, Expect succeed" {
         $ipp = (install-PackageProvider -name gistprovider -force -source $InternalSource -Scope CurrentUser).name
-        $ipp -contains "gistprovider" | should be $true
+        $ipp -contains "gistprovider" | Should -BeTrue
     }
 
     it "Find-package"  {
         $f = Find-Package -ProviderName NuGet -Name jquery -source Nugettest
-        $f.Name -contains "jquery" | should be $true
+        $f.Name -contains "jquery" | Should -BeTrue
 	}
 
     it "Install-package"  {
         $i = install-Package -ProviderName NuGet -Name jquery -force -source Nugettest -Scope CurrentUser
-        $i.Name -contains "jquery" | should be $true
+        $i.Name -contains "jquery" | Should -BeTrue
 	}
 
     it "Get-package"  {
         $g = Get-Package -ProviderName NuGet -Name jquery
-        $g.Name -contains "jquery" | should be $true
+        $g.Name -contains "jquery" | Should -BeTrue
 	}
 
     it "save-package"  {
         $s = save-Package -ProviderName NuGet -Name jquery -path $TestDrive -force -source Nugettest
-        $s.Name -contains "jquery" | should be $true
+        $s.Name -contains "jquery" | Should -BeTrue
 	}
 
     it "uninstall-package"  {
         $u = uninstall-Package -ProviderName NuGet -Name jquery
-        $u.Name -contains "jquery" | should be $true
+        $u.Name -contains "jquery" | Should -BeTrue
 	}
 }
