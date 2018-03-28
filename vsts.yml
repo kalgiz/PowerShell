@@ -1,6 +1,3 @@
-
-jobs:
-  include:
-    - stage: build
-      ps: Import-Module ./tools/vsts.ps1
-      ps: Invoke-VstsInstall
+- stage: build
+  ps: Import-Module ./tools/vsts.ps1
+  ps: Invoke-VstsInstall
