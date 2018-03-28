@@ -1,6 +1,6 @@
 
-language: cpp
-
-install:
-  - ps: Import-Module ./tools/vsts.ps1
-  - ps: Invoke-VstsInstall
+jobs:
+  include:
+    - stage: build
+      ps: Import-Module ./tools/vsts.ps1
+      ps: Invoke-VstsInstall
