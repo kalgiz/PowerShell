@@ -1,3 +1,11 @@
-- stage: build
-  ps: Import-Module ./tools/vsts.ps1
-  ps: Invoke-VstsInstall
+steps:
+#- task: <task type name>@<version>
+#  inputs:
+#    <task specific inputs>
+#  displayName: '<display name of task>'
+- task: ShellScript@2
+  inputs:
+# you can only call .sh
+    scriptPath: '/tools/vsts.sh'
+#    args: '-ReleaseTag $(ReleaseTagVar) -Variable "ReleaseTagVar"'
+  displayName: 'Calculate Release Tag'
