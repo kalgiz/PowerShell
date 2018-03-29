@@ -6,6 +6,6 @@ steps:
 - task: ShellScript@2
   inputs:
 # you can only call .sh
-    scriptPath: '/tools/vsts.sh'
+    scriptPath: './tools/vsts.sh'
 #    args: '-ReleaseTag $(ReleaseTagVar) -Variable "ReleaseTagVar"'
   displayName: 'My name'
