@@ -21,134 +21,136 @@
 
 #gitrepo paths are overrideable to run from your own fork or branch for testing or private distribution
 
-VERSION="1.1.1"
-gitreposubpath="PowerShell/PowerShell/master"
-gitreposcriptroot="https://raw.githubusercontent.com/$gitreposubpath/tools"
-gitscriptname="install-powershell.psh"
+sudo su
 
-echo "Get-PowerShell Core MASTER Installer Version $VERSION"
-echo "Installs PowerShell Core and Optional The Development Environment"
-echo "  Original script is at: $gitreposcriptroot\$gitscriptname"
+# VERSION="1.1.1"
+# gitreposubpath="PowerShell/PowerShell/master"
+# gitreposcriptroot="https://raw.githubusercontent.com/$gitreposubpath/tools"
+# gitscriptname="install-powershell.psh"
 
-echo "Arguments used: $*"
-echo ""
+# echo "Get-PowerShell Core MASTER Installer Version $VERSION"
+# echo "Installs PowerShell Core and Optional The Development Environment"
+# echo "  Original script is at: $gitreposcriptroot\$gitscriptname"
 
-# Let's quit on interrupt of subcommands
-trap '
-  trap - INT # restore default INT handler
-  echo "Interrupted"
-  kill -s INT "$$"
-' INT
+# echo "Arguments used: $*"
+# echo ""
 
-lowercase(){
-    echo "$1" | sed "y/ABCDEFGHIJKLMNOPQRSTUVWXYZ/abcdefghijklmnopqrstuvwxyz/"
-}
+# # Let's quit on interrupt of subcommands
+# trap '
+#   trap - INT # restore default INT handler
+#   echo "Interrupted"
+#   kill -s INT "$$"
+# ' INT
 
-OS=`lowercase \`uname\``
-KERNEL=`uname -r`
-MACH=`uname -m`
+# lowercase(){
+#     echo "$1" | sed "y/ABCDEFGHIJKLMNOPQRSTUVWXYZ/abcdefghijklmnopqrstuvwxyz/"
+# }
 
-if [ "${OS}" == "windowsnt" ]; then
-    OS=windows
-    DistroBasedOn=windows
-    SCRIPTFOLDER=$(dirname $(readlink -f $0))
-elif [ "${OS}" == "darwin" ]; then
-    OS=osx
-    DistroBasedOn=osx
-    # readlink doesn't work the same on macOS
-    SCRIPTFOLDER=$(dirname $0)
-else
-    SCRIPTFOLDER=$(dirname $(readlink -f $0))
-    OS=`uname`
-    if [ "${OS}" == "SunOS" ] ; then
-        OS=solaris
-        ARCH=`uname -p`
-        OSSTR="${OS} ${REV}(${ARCH} `uname -v`)"
-        DistroBasedOn=sunos
-    elif [ "${OS}" == "AIX" ] ; then
-        OSSTR="${OS} `oslevel` (`oslevel -r`)"
-        DistroBasedOn=aix
-    elif [ "${OS}" == "Linux" ] ; then
-        if [ -f /etc/redhat-release ] ; then
-            DistroBasedOn='redhat'
-            DIST=`cat /etc/redhat-release |sed s/\ release.*//`
-            PSUEDONAME=`cat /etc/redhat-release | sed s/.*\(// | sed s/\)//`
-            REV=`cat /etc/redhat-release | sed s/.*release\ // | sed s/\ .*//`
-        elif [ -f /etc/system-release ] ; then
-            DIST=`cat /etc/system-release |sed s/\ release.*//`
-            PSUEDONAME=`cat /etc/system-release | sed s/.*\(// | sed s/\)//`
-            REV=`cat /etc/system-release | sed s/.*release\ // | sed s/\ .*//`
-            if [[ $DIST == *"Amazon Linux"* ]] ; then
-                DistroBasedOn='amazonlinux'
-            else
-                DistroBasedOn='redhat'
-            fi
-        elif [ -f /etc/SuSE-release ] ; then
-            DistroBasedOn='suse'
-            PSUEDONAME=`cat /etc/SuSE-release | tr "\n" ' '| sed s/VERSION.*//`
-            REV=`cat /etc/SuSE-release | grep 'VERSION' | sed s/.*=\ //`
-        elif [ -f /etc/mandrake-release ] ; then
-            DistroBasedOn='mandrake'
-            PSUEDONAME=`cat /etc/mandrake-release | sed s/.*\(// | sed s/\)//`
-            REV=`cat /etc/mandrake-release | sed s/.*release\ // | sed s/\ .*//`
-        elif [ -f /etc/debian_version ] ; then
-            DistroBasedOn='debian'
-            DIST=`cat /etc/lsb-release | grep '^DISTRIB_ID' | awk -F=  '{ print $2 }'`
-            PSUEDONAME=`cat /etc/lsb-release | grep '^DISTRIB_CODENAME' | awk -F=  '{ print $2 }'`
-            REV=`cat /etc/lsb-release | grep '^DISTRIB_RELEASE' | awk -F=  '{ print $2 }'`
-        fi
-        if [ -f /etc/UnitedLinux-release ] ; then
-            DIST="${DIST}[`cat /etc/UnitedLinux-release | tr "\n" ' ' | sed s/VERSION.*//`]"
-        fi
-        OS=`lowercase $OS`
-        DistroBasedOn=`lowercase $DistroBasedOn`
-        readonly OS
-        readonly DIST
-        readonly DistroBasedOn
-        readonly PSUEDONAME
-        readonly REV
-        readonly KERNEL
-        readonly MACH
-    fi
+# OS=`lowercase \`uname\``
+# KERNEL=`uname -r`
+# MACH=`uname -m`
 
-fi
+# if [ "${OS}" == "windowsnt" ]; then
+#     OS=windows
+#     DistroBasedOn=windows
+#     SCRIPTFOLDER=$(dirname $(readlink -f $0))
+# elif [ "${OS}" == "darwin" ]; then
+#     OS=osx
+#     DistroBasedOn=osx
+#     # readlink doesn't work the same on macOS
+#     SCRIPTFOLDER=$(dirname $0)
+# else
+#     SCRIPTFOLDER=$(dirname $(readlink -f $0))
+#     OS=`uname`
+#     if [ "${OS}" == "SunOS" ] ; then
+#         OS=solaris
+#         ARCH=`uname -p`
+#         OSSTR="${OS} ${REV}(${ARCH} `uname -v`)"
+#         DistroBasedOn=sunos
+#     elif [ "${OS}" == "AIX" ] ; then
+#         OSSTR="${OS} `oslevel` (`oslevel -r`)"
+#         DistroBasedOn=aix
+#     elif [ "${OS}" == "Linux" ] ; then
+#         if [ -f /etc/redhat-release ] ; then
+#             DistroBasedOn='redhat'
+#             DIST=`cat /etc/redhat-release |sed s/\ release.*//`
+#             PSUEDONAME=`cat /etc/redhat-release | sed s/.*\(// | sed s/\)//`
+#             REV=`cat /etc/redhat-release | sed s/.*release\ // | sed s/\ .*//`
+#         elif [ -f /etc/system-release ] ; then
+#             DIST=`cat /etc/system-release |sed s/\ release.*//`
+#             PSUEDONAME=`cat /etc/system-release | sed s/.*\(// | sed s/\)//`
+#             REV=`cat /etc/system-release | sed s/.*release\ // | sed s/\ .*//`
+#             if [[ $DIST == *"Amazon Linux"* ]] ; then
+#                 DistroBasedOn='amazonlinux'
+#             else
+#                 DistroBasedOn='redhat'
+#             fi
+#         elif [ -f /etc/SuSE-release ] ; then
+#             DistroBasedOn='suse'
+#             PSUEDONAME=`cat /etc/SuSE-release | tr "\n" ' '| sed s/VERSION.*//`
+#             REV=`cat /etc/SuSE-release | grep 'VERSION' | sed s/.*=\ //`
+#         elif [ -f /etc/mandrake-release ] ; then
+#             DistroBasedOn='mandrake'
+#             PSUEDONAME=`cat /etc/mandrake-release | sed s/.*\(// | sed s/\)//`
+#             REV=`cat /etc/mandrake-release | sed s/.*release\ // | sed s/\ .*//`
+#         elif [ -f /etc/debian_version ] ; then
+#             DistroBasedOn='debian'
+#             DIST=`cat /etc/lsb-release | grep '^DISTRIB_ID' | awk -F=  '{ print $2 }'`
+#             PSUEDONAME=`cat /etc/lsb-release | grep '^DISTRIB_CODENAME' | awk -F=  '{ print $2 }'`
+#             REV=`cat /etc/lsb-release | grep '^DISTRIB_RELEASE' | awk -F=  '{ print $2 }'`
+#         fi
+#         if [ -f /etc/UnitedLinux-release ] ; then
+#             DIST="${DIST}[`cat /etc/UnitedLinux-release | tr "\n" ' ' | sed s/VERSION.*//`]"
+#         fi
+#         OS=`lowercase $OS`
+#         DistroBasedOn=`lowercase $DistroBasedOn`
+#         readonly OS
+#         readonly DIST
+#         readonly DistroBasedOn
+#         readonly PSUEDONAME
+#         readonly REV
+#         readonly KERNEL
+#         readonly MACH
+#     fi
 
-echo "Operating System Details:"
-echo "  OS: $OS"
-echo "  DIST: $DIST"
-echo "  DistroBasedOn: $DistroBasedOn"
-echo "  PSUEDONAME: $PSUEDONAME"
-echo "  REV: $REV"
-echo "  KERNEL: $KERNEL"
-echo "  MACH: $MACH"
+# fi
+
+# echo "Operating System Details:"
+# echo "  OS: $OS"
+# echo "  DIST: $DIST"
+# echo "  DistroBasedOn: $DistroBasedOn"
+# echo "  PSUEDONAME: $PSUEDONAME"
+# echo "  REV: $REV"
+# echo "  KERNEL: $KERNEL"
+# echo "  MACH: $MACH"
 
 
 
-if [[ "'$*'" =~ appimage ]] ; then
-    if [ -f $SCRIPTFOLDER/appimage.sh ]; then
-      #Script files were copied local - use them
-      . $SCRIPTFOLDER/appimage.sh
-    else
-      #Script files are not local - pull from remote
-      echo "Could not find \"appimage.sh\" next to this script..."
-      echo "Pulling it from \"$gitreposcriptroot/appimage.sh\""
-      bash <(wget -qO- $gitreposcriptroot/appimage.sh) $@
-   fi
-elif [ "$DistroBasedOn" == "redhat" ] || [ "$DistroBasedOn" == "debian" ] || [ "$DistroBasedOn" == "osx" ] || [ "$DistroBasedOn" == "suse" ] || [ "$DistroBasedOn" == "amazonlinux" ]; then
-    echo "Configuring PowerShell Core Enviornment for: $DistroBasedOn $DIST $REV"
-    if [ -f $SCRIPTFOLDER/installpsh-$DistroBasedOn.sh ]; then
-      #Script files were copied local - use them
-      . $SCRIPTFOLDER/installpsh-$DistroBasedOn.sh
-    else
-      #Script files are not local - pull from remote
-      echo "Could not find \"installpsh-$DistroBasedOn.sh\" next to this script..."
-      echo "Pulling it from \"$gitreposcriptroot/installpsh-$DistroBasedOn.sh\""
-      if [ "$OS" == "osx" ]; then
-        bash <(curl -s $gitreposcriptroot/installpsh-$DistroBasedOn.sh) $@
-      else
-        bash <(wget -qO- $gitreposcriptroot/installpsh-$DistroBasedOn.sh) $@
-      fi
-   fi
-else
-    echo "Sorry, your operating system is based on $DistroBasedOn and is not supported by PowerShell Core or this installer at this time."
-fi
+# if [[ "'$*'" =~ appimage ]] ; then
+#     if [ -f $SCRIPTFOLDER/appimage.sh ]; then
+#       #Script files were copied local - use them
+#       . $SCRIPTFOLDER/appimage.sh
+#     else
+#       #Script files are not local - pull from remote
+#       echo "Could not find \"appimage.sh\" next to this script..."
+#       echo "Pulling it from \"$gitreposcriptroot/appimage.sh\""
+#       bash <(wget -qO- $gitreposcriptroot/appimage.sh) $@
+#    fi
+# elif [ "$DistroBasedOn" == "redhat" ] || [ "$DistroBasedOn" == "debian" ] || [ "$DistroBasedOn" == "osx" ] || [ "$DistroBasedOn" == "suse" ] || [ "$DistroBasedOn" == "amazonlinux" ]; then
+#     echo "Configuring PowerShell Core Enviornment for: $DistroBasedOn $DIST $REV"
+#     if [ -f $SCRIPTFOLDER/installpsh-$DistroBasedOn.sh ]; then
+#       #Script files were copied local - use them
+#       . $SCRIPTFOLDER/installpsh-$DistroBasedOn.sh
+#     else
+#       #Script files are not local - pull from remote
+#       echo "Could not find \"installpsh-$DistroBasedOn.sh\" next to this script..."
+#       echo "Pulling it from \"$gitreposcriptroot/installpsh-$DistroBasedOn.sh\""
+#       if [ "$OS" == "osx" ]; then
+#         bash <(curl -s $gitreposcriptroot/installpsh-$DistroBasedOn.sh) $@
+#       else
+#         bash <(wget -qO- $gitreposcriptroot/installpsh-$DistroBasedOn.sh) $@
+#       fi
+#    fi
+# else
+#     echo "Sorry, your operating system is based on $DistroBasedOn and is not supported by PowerShell Core or this installer at this time."
+# fi
