@@ -88,10 +88,10 @@ fi
 ## Check requirements and prerequisites
 
 #Only do SUDO if we are not root
-SUDO=''
-if (( $EUID != 0 )); then
-    SUDO='sudo'
-fi
+SUDO='sudo'
+# if (( $EUID != 0 )); then
+#     SUDO='sudo'
+# fi
 
 #Check that sudo is available
 if [[ "$SUDO" -eq "sudo" && ! ("'$*'" =~ skip-sudo-check) ]]; then
