@@ -1,4 +1,1 @@
-function Invoke-VstsInstall
-{
-    Write-Host "Install stage..."
-}
+Write-Host "klaudia's stage!!"
