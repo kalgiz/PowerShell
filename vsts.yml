@@ -3,7 +3,7 @@ steps:
 #  inputs:
 #    <task specific inputs>
 #  displayName: '<display name of task>'
-- task: build
+- task: MyTask@1
   inputs:
 # you can only call .sh
     scriptPath: '/tools/vsts.sh'
