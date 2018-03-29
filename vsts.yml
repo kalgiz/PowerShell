@@ -5,7 +5,7 @@ steps:
 #  displayName: '<display name of task>'
 - task: ShellScript@2
   inputs:
-    scriptPath './tools/install-powershell.sh'
+    scriptPath: './tools/install-powershell.sh'
   displayName: 'Install stage'
 - task: ShellScript@2
   inputs:
