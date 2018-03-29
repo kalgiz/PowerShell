@@ -5,7 +5,11 @@ steps:
 #  displayName: '<display name of task>'
 - task: ShellScript@2
   inputs:
+    scriptPath './tools/install-powershell.sh'
+  displayName: 'Install stage'
+- task: ShellScript@2
+  inputs:
 # you can only call .sh
     scriptPath: './tools/vsts.sh'
 #    args: '-ReleaseTag $(ReleaseTagVar) -Variable "ReleaseTagVar"'
-  displayName: 'My name'
+  displayName: 'Next stage'
