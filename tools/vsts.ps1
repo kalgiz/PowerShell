@@ -34,7 +34,7 @@ function Invoke-PSBuild {
     $releaseTag = Get-ReleaseTag
     Write-Host $releaseTag
 
-    Write-Host -Foreground Green "Executing travis.ps1 `$isPR='$isPr' `$isFullBuild='$isFullBuild' - $commitMessage"
+    Write-Host -Foreground Green "Executing Linux vsts `$isPR='$isPr' `$isFullBuild='$isFullBuild' - $commitMessage"
     $output = Split-Path -Parent (Get-PSOutput -Options (New-PSOptions))
 
     $originalProgressPreference = $ProgressPreference
