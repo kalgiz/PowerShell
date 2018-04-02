@@ -1,6 +1,3 @@
-Write-Host "Hooray bootstrap"
-Invoke-PSBootstrap
-
 function Invoke-PSBootstrap {
     Write-Host "Invoke-PSBootstrap function called"
     # Write-Host -Foreground Green "Executing Linux vsts -BootStrap"
@@ -9,3 +6,6 @@ function Invoke-PSBootstrap {
     # Sync-PSTags -AddRemoteIfMissing
     # Start-PSBootstrap
 }
+
+Write-Host "Hooray bootstrap"
+Invoke-PSBootstrap
