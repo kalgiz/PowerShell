@@ -12,4 +12,4 @@ steps:
 # you can only call .sh
     scriptPath: './tools/vsts.sh'
 #    args: '-ReleaseTag $(ReleaseTagVar) -Variable "ReleaseTagVar"'
-  displayName: 'Next stage'
+  displayName: 'Bootstrap stage'
