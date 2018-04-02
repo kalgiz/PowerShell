@@ -40,7 +40,7 @@ function Invoke-PSBuild {
     $ProgressPreference = 'SilentlyContinue'
     try {
         ## We use CrossGen build to run tests only if it's the daily build.
-        Start-PSBuild -CrossGen -PSModuleRestore -CI -ReleaseTag $releaseTag
+        Start-PSBuild -CrossGen -PSModuleRestore -CI -ReleaseTag "v6.1.0-preview.2"
     }
     finally{
         $ProgressPreference = $originalProgressPreference
