@@ -12,3 +12,8 @@ steps:
     scriptPath: './tools/vsts.sh'
     args: 'Bootstrap'
   displayName: 'Bootstrap stage'
+- task: ShellScript@2
+  inputs:
+    scriptPath: './tools/vsts.sh'
+    args: 'Build'
+  displayName: 'Build stage'
