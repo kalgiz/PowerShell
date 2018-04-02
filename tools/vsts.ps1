@@ -32,6 +32,7 @@ function Invoke-PSBootstrap {
 
 function Invoke-PSBuild {
     $releaseTag = Get-ReleaseTag
+    Write-Host $releaseTag
 
     Write-Host -Foreground Green "Executing travis.ps1 `$isPR='$isPr' `$isFullBuild='$isFullBuild' - $commitMessage"
     $output = Split-Path -Parent (Get-PSOutput -Options (New-PSOptions))
@@ -40,7 +41,7 @@ function Invoke-PSBuild {
     $ProgressPreference = 'SilentlyContinue'
     try {
         ## We use CrossGen build to run tests only if it's the daily build.
-        Start-PSBuild -CrossGen -PSModuleRestore -CI -ReleaseTag "v6.1.0-preview.2"
+        Start-PSBuild -CrossGen -PSModuleRestore -CI -ReleaseTag $releaseTag
     }
     finally{
         $ProgressPreference = $originalProgressPreference
