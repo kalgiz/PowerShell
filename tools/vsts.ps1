@@ -8,4 +8,3 @@ function Invoke-PSBootstrap {
 }
 
 Write-Host "Hooray bootstrap"
-Invoke-PSBootstrap
