@@ -14,12 +14,12 @@ function Get-ReleaseTag
     $metaData = Get-Content $metaDataPath | ConvertFrom-Json
 
     $releaseTag = $metadata.NextReleaseTag
-    if($env:BUILD_BUILDNUMBER)
-    {
-        Write-Host $env:BUILD_BUILDNUMBER
-        # $releaseTag = $releaseTag.split('.')[0..2] -join '.'
-        $releaseTag = $releaseTag+'.'+$env:BUILD_BUILDNUMBER
-    }
+    # if($env:BUILD_BUILDNUMBER)
+    # {
+    #     Write-Host $env:BUILD_BUILDNUMBER
+    #     $releaseTag = $releaseTag.split('.')[0..2] -join '.'
+    #     $releaseTag = $releaseTag+'.'+$env:BUILD_BUILDNUMBER
+    # }
 
     return $releaseTag
 }
@@ -47,5 +47,38 @@ function Invoke-PSBuild {
     finally{
         $ProgressPreference = $originalProgressPreference
     }
+
+    $testResultsNoSudo = "$pwd/TestResultsNoSudo.xml"
+    $testResultsSudo = "$pwd/TestResultsSudo.xml"
+
+    $pesterParam = @{
+        'binDir'     = $output
+        'PassThru'   = $true
+        'Terse'      = $true
+        'Tag'        = @()
+        'ExcludeTag' = @('RequireSudoOnUnix')
+        'OutputFile' = $testResultsNoSudo
+    }
+
+    if ($isFullBuild) {
+        $pesterParam['Tag'] = @('CI','Feature','Scenario')
+    } else {
+        $pesterParam['Tag'] = @('CI')
+        $pesterParam['ThrowOnFailure'] = $true
+    }
+
+    if ($hasRunFailingTestTag)
+    {
+        $pesterParam['IncludeFailingTest'] = $true
+    }
+
+    # Remove telemetry semaphore file in CI
+    $telemetrySemaphoreFilepath = Join-Path $output DELETE_ME_TO_DISABLE_CONSOLEHOST_TELEMETRY
+    if ( Test-Path "${telemetrySemaphoreFilepath}" ) {
+        Remove-Item -force ${telemetrySemaphoreFilepath}
+    }
+
+    # Running tests which do not require sudo.
+    $pesterPassThruNoSudoObject = Start-PSPester @pesterParam
 }
 
