@@ -9,5 +9,5 @@ steps:
   displayName: 'Install stage'
 - task: ShellScript@2
   inputs:
-    scriptPath: './tools/vsts.sh "Bootstrap" '
+    scriptPath: './tools/vsts.sh Bootstrap '
   displayName: 'Bootstrap stage'
