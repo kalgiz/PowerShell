@@ -14,11 +14,11 @@ function Get-ReleaseTag
     $metaData = Get-Content $metaDataPath | ConvertFrom-Json
 
     $releaseTag = $metadata.NextReleaseTag
-    if($env:BUILD_BUILDNUMBER)
-    {
-        $releaseTag = $releaseTag.split('.')[0..2] -join '.'
-        $releaseTag = $releaseTag+'.'+$env:BUILD_BUILDNUMBER
-    }
+    # if($env:BUILD_BUILDNUMBER)
+    # {
+    #     $releaseTag = $releaseTag.split('.')[0..2] -join '.'
+    #     $releaseTag = $releaseTag+'.'+$env:BUILD_BUILDNUMBER
+    # }
 
     return $releaseTag
 }
