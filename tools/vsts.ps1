@@ -28,13 +28,6 @@ function Get-ReleaseTag
     return $releaseTag
 }
 
-function Ivoke-PSBuild {
-    $releaseTag = Get-ReleaseTag
-
-    #!!!!
-    Write-Host $releaseTag
-}
-
 function Invoke-PSBootstrap {
     Write-Host -Foreground Green "Executing Linux vsts -BootStrap `$isPR='$isPr' - $commitMessage"
     # Make sure we have all the tags
@@ -42,5 +35,10 @@ function Invoke-PSBootstrap {
     Start-PSBootstrap
 }
 
+function Invoke-PSBuild {
+    $releaseTag = Get-ReleaseTag
 
+    #!!!!
+    Write-Host $releaseTag
+}
 
