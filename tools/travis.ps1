@@ -1,3 +1,4 @@
+
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License.
 param(
@@ -57,6 +58,8 @@ function Get-ReleaseTag
         $releaseTag = $releaseTag+'.'+$env:TRAVIS_BUILD_NUMBER
     }
 
+    Write-Host "TAAAAAAAAAAAAAAAAAAAGGG!!!!!!!"
+    Write-Host $releaseTag
     return $releaseTag
 }
 
