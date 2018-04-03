@@ -4,6 +4,7 @@ $isPR = $env:BUILD_REASON -eq "PullRequest"
 $commitMessage = git log --format=%B -n 1 $env:BUILD_SOURCEVERSION
 $hasFeatureTag = $commitMessage -match '\[feature\]'
 $hasPackageTag = $commitMessage -match '\[package\]'
+$createPackages = -not $isPr -or $hasPackageTag
 $hasRunFailingTestTag = $commitMessage -match '\[includeFailingTest\]'
 $isDailyBuild = $env:BUILD_REASON -eq 'Schedule'
 $isFullBuild = $isDailyBuild -or $hasFeatureTag
@@ -30,7 +31,7 @@ function Invoke-PSBootstrap {
     Write-Host -Foreground Green "Executing Linux vsts -BootStrap `$isPR='$isPr' - $commitMessage"
     # Make sure we have all the tags
     Sync-PSTags -AddRemoteIfMissing
-    Start-PSBootstrap
+    Start-PSBootstrap -Package:$createPackages
 }
 
 function Invoke-PSBuild {
@@ -43,7 +44,6 @@ function Invoke-PSBuild {
     $originalProgressPreference = $ProgressPreference
     $ProgressPreference = 'SilentlyContinue'
     try {
-        ## We use CrossGen build to run tests only if it's the daily build.
         Start-PSBuild -CrossGen -PSModuleRestore -CI -ReleaseTag $releaseTag
     }
     finally{
@@ -54,20 +54,19 @@ function Invoke-PSBuild {
     $testResultsSudo = "$pwd/TestResultsSudo.xml"
 
     $pesterParam = @{
-        'binDir'     = $output
-        'PassThru'   = $true
-        'Terse'      = $true
-        'Tag'        = @()
-        'ExcludeTag' = @('RequireSudoOnUnix')
-        'OutputFile' = $testResultsNoSudo
+        'binDir'         = $output
+        'PassThru'       = $true
+        'Terse'          = $true
+        'Tag'            = @()
+        'ExcludeTag'     = @('RequireSudoOnUnix')
+        'OutputFile'     = $testResultsNoSudo
+        'ThrowOnFailure' = $true
     }
 
     if ($isFullBuild) {
         $pesterParam['Tag'] = @('CI','Feature','Scenario')
     } else {
         $pesterParam['Tag'] = @('CI')
-        # do we want this in every other case ??
-        # $pesterParam['ThrowOnFailure'] = $true
     }
 
     if ($hasRunFailingTestTag)
