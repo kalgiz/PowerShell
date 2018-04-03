@@ -60,7 +60,7 @@ function Invoke-PSBuild {
         'Tag'            = @()
         'ExcludeTag'     = @('RequireSudoOnUnix')
         'OutputFile'     = $testResultsNoSudo
-        'ThrowOnFailure' = $true
+        # 'ThrowOnFailure' = $true
     }
 
     if ($isFullBuild) {
