@@ -80,5 +80,39 @@ function Invoke-PSBuild {
 
     # Running tests which do not require sudo.
     $pesterPassThruNoSudoObject = Start-PSPester @pesterParam
+
+     # Running tests, which require sudo.
+     $pesterParam['Tag'] = @('RequireSudoOnUnix')
+     $pesterParam['ExcludeTag'] = @()
+     $pesterParam['Sudo'] = $true
+     $pesterParam['OutputFile'] = $testResultsSudo
+     $pesterPassThruSudoObject = Start-PSPester @pesterParam
+
+     # Determine whether the build passed
+     try {
+         # this throws if there was an error
+         @($pesterPassThruNoSudoObject, $pesterPassThruSudoObject) | ForEach-Object { Test-PSPesterResults -ResultObject $_ }
+         $result = "PASS"
+     }
+     catch {
+         $resultError = $_
+         $result = "FAIL"
+     }
+
+     try {
+         $SequentialXUnitTestResultsFile = "$pwd/SequentialXUnitTestResults.xml"
+         $ParallelXUnitTestResultsFile = "$pwd/ParallelXUnitTestResults.xml"
+
+         Start-PSxUnit -SequentialTestResultsFile $SequentialXUnitTestResultsFile -ParallelTestResultsFile $ParallelXUnitTestResultsFile
+         # If there are failures, Test-XUnitTestResults throws
+         $SequentialXUnitTestResultsFile, $ParallelXUnitTestResultsFile | ForEach-Object { Test-XUnitTestResults -TestResultsFile $_ }
+     }
+     catch {
+         $result = "FAIL"
+         if (!$resultError)
+         {
+             $resultError = $_
+         }
+     }
 }
 
