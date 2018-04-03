@@ -14,6 +14,8 @@ function Get-ReleaseTag
     $metaData = Get-Content $metaDataPath | ConvertFrom-Json
 
     $releaseTag = $metadata.NextReleaseTag
+    Write-Host "TAG: $releaseTag"
+    Write-Host "Build number $env:BUILD_BUILDNUMBER"
     # if($env:BUILD_BUILDNUMBER)
     # {
     #     Write-Host $env:BUILD_BUILDNUMBER
@@ -64,6 +66,7 @@ function Invoke-PSBuild {
         $pesterParam['Tag'] = @('CI','Feature','Scenario')
     } else {
         $pesterParam['Tag'] = @('CI')
+        # do we want this in every other case ??
         # $pesterParam['ThrowOnFailure'] = $true
     }
 
@@ -79,41 +82,40 @@ function Invoke-PSBuild {
     }
 
     # Running tests which do not require sudo.
-    # Start-PSPester @pesterParam -Path "$repoRoot/test/powershell/Modules/Microsoft.PowerShell.Management/Get-Process.Tests.ps1"
     $pesterPassThruNoSudoObject = Start-PSPester @pesterParam
 
-    #  # Running tests, which require sudo.
-    #  $pesterParam['Tag'] = @('RequireSudoOnUnix')
-    #  $pesterParam['ExcludeTag'] = @()
-    #  $pesterParam['Sudo'] = $true
-    #  $pesterParam['OutputFile'] = $testResultsSudo
-    #  $pesterPassThruSudoObject = Start-PSPester @pesterParam
+     # Running tests, which require sudo.
+     $pesterParam['Tag'] = @('RequireSudoOnUnix')
+     $pesterParam['ExcludeTag'] = @()
+     $pesterParam['Sudo'] = $true
+     $pesterParam['OutputFile'] = $testResultsSudo
+     $pesterPassThruSudoObject = Start-PSPester @pesterParam
 
-    #  # Determine whether the build passed
-    #  try {
-    #      # this throws if there was an error
-    #      @($pesterPassThruNoSudoObject, $pesterPassThruSudoObject) | ForEach-Object { Test-PSPesterResults -ResultObject $_ }
-    #      $result = "PASS"
-    #  }
-    #  catch {
-    #      $resultError = $_
-    #      $result = "FAIL"
-    #  }
+     # Determine whether the build passed
+     try {
+         # this throws if there was an error
+         @($pesterPassThruNoSudoObject, $pesterPassThruSudoObject) | ForEach-Object { Test-PSPesterResults -ResultObject $_ }
+         $result = "PASS"
+     }
+     catch {
+         $resultError = $_
+         $result = "FAIL"
+     }
 
-    #  try {
-    #      $SequentialXUnitTestResultsFile = "$pwd/SequentialXUnitTestResults.xml"
-    #      $ParallelXUnitTestResultsFile = "$pwd/ParallelXUnitTestResults.xml"
+     try {
+         $SequentialXUnitTestResultsFile = "$pwd/SequentialXUnitTestResults.xml"
+         $ParallelXUnitTestResultsFile = "$pwd/ParallelXUnitTestResults.xml"
 
-    #      Start-PSxUnit -SequentialTestResultsFile $SequentialXUnitTestResultsFile -ParallelTestResultsFile $ParallelXUnitTestResultsFile
-    #      # If there are failures, Test-XUnitTestResults throws
-    #      $SequentialXUnitTestResultsFile, $ParallelXUnitTestResultsFile | ForEach-Object { Test-XUnitTestResults -TestResultsFile $_ }
-    #  }
-    #  catch {
-    #      $result = "FAIL"
-    #      if (!$resultError)
-    #      {
-    #          $resultError = $_
-    #      }
-    #  }
+         Start-PSxUnit -SequentialTestResultsFile $SequentialXUnitTestResultsFile -ParallelTestResultsFile $ParallelXUnitTestResultsFile
+         # If there are failures, Test-XUnitTestResults throws
+         $SequentialXUnitTestResultsFile, $ParallelXUnitTestResultsFile | ForEach-Object { Test-XUnitTestResults -TestResultsFile $_ }
+     }
+     catch {
+         $result = "FAIL"
+         if (!$resultError)
+         {
+             $resultError = $_
+         }
+     }
 }
 
