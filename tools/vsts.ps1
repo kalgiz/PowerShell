@@ -79,7 +79,7 @@ function Invoke-PSBuild {
     }
 
     # Running tests which do not require sudo.
-    Start-PSPester @pesterParam -Path "$repoRoot/test/powershell/Modules/Microsoft.PowerShell.Management"
+    Start-PSPester @pesterParam -Path "$repoRoot/test/powershell/Modules/Microsoft.PowerShell.Management/Get-Process.Tests.ps1"
     # $pesterPassThruNoSudoObject = Start-PSPester @pesterParam
 
     #  # Running tests, which require sudo.
