@@ -120,3 +120,7 @@ function Invoke-PSTest {
         }
     }
 }
+
+function Invoke-PSAfterTest {
+    Write-Host $env:AGENT_JOBSTATUS
+}
