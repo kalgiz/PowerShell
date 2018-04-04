@@ -24,7 +24,7 @@ function Get-ReleaseTag
     #     $releaseTag = $releaseTag+'.'+$env:BUILD_BUILDNUMBER
     # }
 
-    return $releaseTag
+    return "v6.1.0-preview.20180403.7"
 }
 
 function Invoke-PSBootstrap {
