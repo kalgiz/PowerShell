@@ -52,16 +52,12 @@ function Get-ReleaseTag
     $metaData = Get-Content $metaDataPath | ConvertFrom-Json
 
     $releaseTag = $metadata.NextReleaseTag
-    Write-Host $releaseTag
-    Write-Host $env:TRAVIS_BUILD_NUMBER
     if($env:TRAVIS_BUILD_NUMBER)
     {
         $releaseTag = $releaseTag.split('.')[0..2] -join '.'
         $releaseTag = $releaseTag+'.'+$env:TRAVIS_BUILD_NUMBER
     }
 
-    Write-Host "TAAAAAAAAAAAAAAAAAAAGGG!!!!!!!"
-    Write-Host $releaseTag
     return $releaseTag
 }
 

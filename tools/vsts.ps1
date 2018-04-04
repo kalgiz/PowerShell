@@ -17,7 +17,6 @@ function Get-ReleaseTag
     $releaseTag = $metadata.NextReleaseTag
     if($env:BUILD_BUILDNUMBER)
     {
-        Write-Host $env:BUILD_BUILDNUMBER
         $releaseTag = $releaseTag.split('.')[0..2] -join '.'
         # If the Build number has a dot in it, only the string before dot is inserted into releaseTag.
         $buildMajorNumber = $env:BUILD_BUILDNUMBER
@@ -40,7 +39,6 @@ function Invoke-PSBootstrap {
 
 function Invoke-PSBuild {
     $releaseTag = Get-ReleaseTag
-    Write-Host $releaseTag
 
     Write-Host -Foreground Green "Executing Linux vsts `$isPR='$isPr' `$isFullBuild='$isFullBuild' - $commitMessage"
     $output = Split-Path -Parent (Get-PSOutput -Options (New-PSOptions))
@@ -64,7 +62,7 @@ function Invoke-PSBuild {
         'Tag'            = @()
         'ExcludeTag'     = @('RequireSudoOnUnix')
         'OutputFile'     = $testResultsNoSudo
-        # 'ThrowOnFailure' = $true
+        'ThrowOnFailure' = $true
     }
 
     if ($isFullBuild) {
