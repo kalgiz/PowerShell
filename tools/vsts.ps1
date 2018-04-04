@@ -15,16 +15,20 @@ function Get-ReleaseTag
     $metaData = Get-Content $metaDataPath | ConvertFrom-Json
 
     $releaseTag = $metadata.NextReleaseTag
-    Write-Host "TAG: $releaseTag"
-    Write-Host "Build number $env:BUILD_BUILDNUMBER"
-    # if($env:BUILD_BUILDNUMBER)
-    # {
-    #     Write-Host $env:BUILD_BUILDNUMBER
-    #     $releaseTag = $releaseTag.split('.')[0..2] -join '.'
-    #     $releaseTag = $releaseTag+'.'+$env:BUILD_BUILDNUMBER
-    # }
+    if($env:BUILD_BUILDNUMBER)
+    {
+        Write-Host $env:BUILD_BUILDNUMBER
+        $releaseTag = $releaseTag.split('.')[0..2] -join '.'
+        # If the Build number has a dot in it, only the string before dot is inserted into releaseTag.
+        $buildMajorNumber = $env:BUILD_BUILDNUMBER
+        $dotPos = $buildMajorNumber.IndexOf(".")
+        if ($dotPos -ne -1) {
+            $buildMajorNumber = $buildMajorNumber.Substring(0, $dotPos)
+        }
+        $releaseTag = $releaseTag+'.'+$buildMajorNumber
+    }
 
-    return "v6.1.0-preview.20180403.7"
+    return $releaseTag
 }
 
 function Invoke-PSBootstrap {
