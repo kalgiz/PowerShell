@@ -27,8 +27,3 @@ steps:
     scriptPath: './tools/vsts.sh'
     args: 'AfterTest'
   displayName: ' After test stage'
-- task: ShellScript@2
-  inputs:
-    scriptPath: './tools/vsts.sh'
-    args: 'Add'
-  displayName: 'Add stage'

@@ -8,6 +8,4 @@ elif [ $1 == "Test" ]; then
     pwsh -command ". ./vsts.ps1; Invoke-PSTest"
 elif [ $1 == "AfterTest" ]; then
     pwsh -command ". ./vsts.ps1; Invoke-PSAfterTest"
-elif [ $1 == "Add" ]; then
-    pwsh -command "echo aaaa"
 fi
