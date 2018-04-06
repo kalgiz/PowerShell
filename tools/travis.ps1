@@ -201,6 +201,9 @@ elseif($Stage -eq 'Build')
         $ProgressPreference = $originalProgressPreference
     }
 
+    Write-Host "PShome!!"
+    Write-Host $PSHome
+
     $testResultsNoSudo = "$pwd/TestResultsNoSudo.xml"
     $testResultsSudo = "$pwd/TestResultsSudo.xml"
 
