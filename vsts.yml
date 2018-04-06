@@ -25,7 +25,7 @@ steps:
     scriptPath: './tools/vsts.sh'
     args: 'Test'
     disableAutoCwd: true
-    cwd: './'
+    # cwd: './'
   displayName: 'Test stage'
   continueOnError: true
 - task: ShellScript@2
