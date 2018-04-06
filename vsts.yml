@@ -1,6 +1,6 @@
 resources:
 - repo: self
-    clean: true
+  clean: true
 steps:
 #- task: <task type name>@<version>
 #  inputs:
