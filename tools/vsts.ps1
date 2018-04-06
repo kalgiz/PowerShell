@@ -35,6 +35,9 @@ function Invoke-PSBootstrap {
     # Make sure we have all the tags
     Sync-PSTags -AddRemoteIfMissing
     Start-PSBootstrap -Package:$createPackages
+    Write-Host "Version table!!!!"
+    Write-Host $PSVersionTable
+    Write-Host $PSHOME
 }
 
 function Invoke-PSBuild {
@@ -49,9 +52,16 @@ function Invoke-PSBuild {
     finally{
         $ProgressPreference = $originalProgressPreference
     }
+    Write-Host "Version table!!!!"
+    Write-Host $PSVersionTable
+    Write-Host $PSHOME
 }
 
 function Invoke-PSTest {
+    Write-Host "Version table!!!!"
+    Write-Host $PSVersionTable
+    Write-Host $PSHOME
+
     $testResultsNoSudo = "$pwd/TestResultsNoSudo.xml"
     $testResultsSudo = "$pwd/TestResultsSudo.xml"
     $output = Split-Path -Parent (Get-PSOutput -Options (New-PSOptions))

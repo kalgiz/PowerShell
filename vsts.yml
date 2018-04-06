@@ -1,3 +1,6 @@
+resources:
+- repo: self
+    clean: true
 steps:
 #- task: <task type name>@<version>
 #  inputs:
@@ -21,7 +24,10 @@ steps:
   inputs:
     scriptPath: './tools/vsts.sh'
     args: 'Test'
+    disableAutoCwd: true
+    cwd: './'
   displayName: 'Test stage'
+  continueOnError: true
 - task: ShellScript@2
   inputs:
     scriptPath: './tools/vsts.sh'
