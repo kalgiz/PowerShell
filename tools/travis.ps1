@@ -203,6 +203,8 @@ elseif($Stage -eq 'Build')
 
     Write-Host "PShome!!"
     Write-Host $PSHome
+    Write-Host "And pwd!!"
+    Write-Host $pwd
 
     $testResultsNoSudo = "$pwd/TestResultsNoSudo.xml"
     $testResultsSudo = "$pwd/TestResultsSudo.xml"
