@@ -61,6 +61,7 @@ function Invoke-PSTest {
     Write-Host "Version table!!!!"
     Write-Host $PSVersionTable
     Write-Host $PSHOME
+    Write-Host $pwd
 
     $testResultsNoSudo = "$pwd/TestResultsNoSudo.xml"
     $testResultsSudo = "$pwd/TestResultsSudo.xml"
