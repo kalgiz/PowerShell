@@ -5,7 +5,8 @@ if [ $1 == "Bootstrap" ]; then
 elif [ $1 == "Build" ]; then
     pwsh -command ". ./vsts.ps1; Invoke-PSBuild"
 elif [ $1 == "Test" ]; then
-    pwsh -command ". ./vsts.ps1; Invoke-PSTest"
+    cd ..
+    pwsh -command "./tools/vsts.ps1; Invoke-PSTest"
 elif [ $1 == "AfterTest" ]; then
     pwsh -command ". ./vsts.ps1; Invoke-PSAfterTest"
 fi
