@@ -245,11 +245,11 @@ Describe "Test-Connection" -tags "CI" {
             }
         }
 
-        # It "Quiet works" {
-        #     $result = Test-Connection "azure.com" -TraceRoute -Quiet
+        It "Quiet works" {
+            $result = Test-Connection "azure.com" -TraceRoute
 
-        #     $result | Should -BeTrue
-        # }
+            # $result | Should -BeTrue
+        }
     }
 
     Context "Connection" {
