@@ -136,7 +136,7 @@ function Invoke-PSTest {
 
 function Invoke-PSAfterTest {
     $result = 'PASS'
-    if ($env:AGENT_JOBSTATUS == "Failed" -or $env:AGENT_JOBSTATUS == "SucceededWithIssues") {
+    if ($env:AGENT_JOBSTATUS -eq "Failed" -or $env:AGENT_JOBSTATUS -eq "SucceededWithIssues") {
         $result = 'FAIL'
     }
     Write-Host $result
