@@ -35,6 +35,7 @@ function Invoke-PSBootstrap {
     # Make sure we have all the tags
     Sync-PSTags -AddRemoteIfMissing
     Start-PSBootstrap -Package:$createPackages
+    # TODO: Debug loggs to be deleted.
     Write-Host "Version table!!!!"
     Write-Host $PSVersionTable
     Write-Host $PSHOME
@@ -58,6 +59,7 @@ function Invoke-PSBuild {
 }
 
 function Invoke-PSTest {
+    # TODO Debug loggs to delete later
     Write-Host "Version table!!!!"
     Write-Host $PSVersionTable
     Write-Host $PSHOME
@@ -108,11 +110,11 @@ function Invoke-PSTest {
     try {
         # this throws if there was an error
         @($pesterPassThruNoSudoObject, $pesterPassThruSudoObject) | ForEach-Object { Test-PSPesterResults -ResultObject $_ }
-        $result = "PASS"
+        # $result = "PASS"
     }
     catch {
-        $resultError = $_
-        $result = "FAIL"
+    #     $resultError = $_
+    #     $result = "FAIL"
     }
 
     try {
@@ -124,14 +126,18 @@ function Invoke-PSTest {
         $SequentialXUnitTestResultsFile, $ParallelXUnitTestResultsFile | ForEach-Object { Test-XUnitTestResults -TestResultsFile $_ }
     }
     catch {
-        $result = "FAIL"
-        if (!$resultError)
-        {
-            $resultError = $_
-        }
+        # $result = "FAIL"
+        # if (!$resultError)
+        # {
+            # $resultError = $_
+        # }
     }
 }
 
 function Invoke-PSAfterTest {
-    Write-Host $env:AGENT_JOBSTATUS
+    $result = 'PASS'
+    if ($env:AGENT_JOBSTATUS == "Failed" -or $env:AGENT_JOBSTATUS == "SucceededWithIssues") {
+        $result = 'FAIL'
+    }
+    Write-Host $result
 }
