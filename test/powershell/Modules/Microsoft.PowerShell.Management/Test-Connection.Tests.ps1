@@ -220,7 +220,7 @@ Describe "Test-Connection" -tags "CI" {
 
     Context "TraceRoute" {
         It "TraceRoute works" {
-            $result = Test-Connection "azure.com" -TraceRoute
+            $result = Test-Connection $realName -TraceRoute
             $replies = $result.Replies
             # Check target host reply.
             $pingReplies = $replies[-1].PingReplies
@@ -243,12 +243,11 @@ Describe "Test-Connection" -tags "CI" {
             } else {
                 $pingReplies[0].Buffer.Count | Should -Be 32
             }
+            Write-Host "TraceRoute works with success"
         }
-
         # It "Quiet works" {
-        #     $result = Test-Connection "azure.com" -TraceRoute
-
-        #     # $result | Should -BeTrue
+        #     $result = Test-Connection $realName -TraceRoute -Quiet
+        #     $result | Should -BeTrue
         # }
     }
 
