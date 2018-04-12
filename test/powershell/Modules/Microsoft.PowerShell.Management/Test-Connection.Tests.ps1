@@ -245,10 +245,11 @@ Describe "Test-Connection" -tags "CI" {
             }
             Write-Host "TraceRoute works with success"
         }
-        # It "Quiet works" {
-        #     $result = Test-Connection $realName -TraceRoute -Quiet
-        #     $result | Should -BeTrue
-        # }
+        It "Quiet works" {
+            $result = Test-Connection $realName -TraceRoute -Quiet
+
+            $result | Should -BeTrue
+        }
     }
 
     Context "Connection" {
