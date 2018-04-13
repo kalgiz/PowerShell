@@ -180,17 +180,16 @@ function Invoke-PSBuild {
     finally{
         $ProgressPreference = $originalProgressPreference
     }
-    Write-Host "Version table!!!!"
-    Write-Host $PSVersionTable
-    Write-Host $PSHOME
+    Write-Host "PSVersion: $PSVersionTable.PSVersion"
+    Write-Host "PSHome: $PSHOME"
+    Write-Host "PWD: $pwd"
 }
 
 function Invoke-PSTest {
     # TODO Debug loggs to delete later
-    Write-Host "Version table!!!!"
-    Write-Host $PSVersionTable
-    Write-Host $PSHOME
-    Write-Host $pwd
+    Write-Host "PSVersion: $PSVersionTable.PSVersion"
+    Write-Host "PSHome: $PSHOME"
+    Write-Host "PWD: $pwd"
 
     $testResultsNoSudo = "$pwd/TestResultsNoSudo.xml"
     $testResultsSudo = "$pwd/TestResultsSudo.xml"

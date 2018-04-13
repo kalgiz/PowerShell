@@ -88,6 +88,7 @@ Describe "PSVersionTable" -Tags "CI" {
         $PSVersionName = "PSVersion"
         $keys1 = ($PSVersionTable | Format-Table -HideTableHeaders -Property Name | Out-String) -split [System.Environment]::NewLine | Where-Object {$_} | ForEach-Object {$_.Trim()}
 
+        Write-Host "Keys for psversion are: $keys1[0]"
         $keys1[0] | Should -Be "PSVersion"
         $keys1[1] | Should -Be "PSEdition"
 
