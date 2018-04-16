@@ -218,39 +218,39 @@ Describe "Test-Connection" -tags "CI" {
         }
     }
 
-    Context "TraceRoute" {
-        It "TraceRoute works" {
-            $result = Test-Connection $realName -TraceRoute
-            $replies = $result.Replies
-            # Check target host reply.
-            $pingReplies = $replies[-1].PingReplies
+    # Context "TraceRoute" {
+    #     It "TraceRoute works" {
+    #         $result = Test-Connection $realName -TraceRoute
+    #         $replies = $result.Replies
+    #         # Check target host reply.
+    #         $pingReplies = $replies[-1].PingReplies
 
-            $result.Count              | Should -Be 1
-            $result                    | Should -BeOfType "Microsoft.PowerShell.Commands.TestConnectionCommand+TraceRouteResult"
-            $result.Source             | Should -BeExactly $hostName
-            $result.DestinationAddress | Should -BeExactly $realAddress
-            $result.DestinationHost    | Should -BeExactly $realName
+    #         $result.Count              | Should -Be 1
+    #         $result                    | Should -BeOfType "Microsoft.PowerShell.Commands.TestConnectionCommand+TraceRouteResult"
+    #         $result.Source             | Should -BeExactly $hostName
+    #         $result.DestinationAddress | Should -BeExactly $realAddress
+    #         $result.DestinationHost    | Should -BeExactly $realName
 
-            $replies.Count               | Should -BeGreaterThan 0
-            $replies[0]                  | Should -BeOfType "Microsoft.PowerShell.Commands.TestConnectionCommand+TraceRouteReply"
-            $replies[0].Hop              | Should -Be 1
+    #         $replies.Count               | Should -BeGreaterThan 0
+    #         $replies[0]                  | Should -BeOfType "Microsoft.PowerShell.Commands.TestConnectionCommand+TraceRouteReply"
+    #         $replies[0].Hop              | Should -Be 1
 
-            $pingReplies.Count           | Should -Be 3
-            $pingReplies[0].Address      | Should -BeExactly $realAddress
-            $pingReplies[0].Status       | Should -BeExactly "Success"
-            if (!$isWindows) {
-                $pingReplies[0].Buffer.Count | Should -Be 0
-            } else {
-                $pingReplies[0].Buffer.Count | Should -Be 32
-            }
-            Write-Host "TraceRoute works with success"
-        }
-        It "Quiet works" {
-            $result = Test-Connection $realName -TraceRoute -Quiet
+    #         $pingReplies.Count           | Should -Be 3
+    #         $pingReplies[0].Address      | Should -BeExactly $realAddress
+    #         $pingReplies[0].Status       | Should -BeExactly "Success"
+    #         if (!$isWindows) {
+    #             $pingReplies[0].Buffer.Count | Should -Be 0
+    #         } else {
+    #             $pingReplies[0].Buffer.Count | Should -Be 32
+    #         }
+    #         Write-Host "TraceRoute works with success"
+    #     }
+    #     It "Quiet works" {
+    #         $result = Test-Connection $realName -TraceRoute -Quiet
 
-            $result | Should -BeTrue
-        }
-    }
+    #         $result | Should -BeTrue
+    #     }
+    # }
 
     Context "Connection" {
         BeforeAll {
