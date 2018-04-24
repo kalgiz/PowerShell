@@ -222,10 +222,12 @@ function Invoke-PSTest {
         Remove-Item -force ${telemetrySemaphoreFilepath}
     }
 
+    $IsElevated = $false
     # Running tests which do not require sudo.
     $pesterPassThruNoSudoObject = Start-PSPester @pesterParam
 
     # Running tests, which require sudo.
+    $IsElevated = $false
     $pesterParam['Tag'] = @('RequireSudoOnUnix')
     $pesterParam['ExcludeTag'] = @()
     $pesterParam['Sudo'] = $true

@@ -85,6 +85,8 @@ Describe "PSVersionTable" -Tags "CI" {
     }
 
     It "Verify `$PSVersionTable is ordered and 'PSVersion' is on first place" {
+        $PSVersionTable
+        $PSHome
         $PSVersionName = "PSVersion"
         $keys1 = ($PSVersionTable | Format-Table -HideTableHeaders -Property Name | Out-String) -split [System.Environment]::NewLine | Where-Object {$_} | ForEach-Object {$_.Trim()}
 

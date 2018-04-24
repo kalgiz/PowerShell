@@ -180,6 +180,9 @@ Describe "New-Item with links" -Tags @('CI', 'RequireAdminOnWindows') {
     }
 
     It "Should error correctly when failing to create a symbolic link" -Skip:($IsWindows -or $IsElevated) {
+        Write-Host "PSversiontable in differen test"
+        $PSVersionTable
+        $PSHome
         Write-Host "IsElevated: $IsElevated"
         # This test expects that /sbin exists but is not writable by the user
         { New-Item -ItemType SymbolicLink -Path "/sbin/powershell-test" -Target $FullyQualifiedFolder -ErrorAction Stop } |
