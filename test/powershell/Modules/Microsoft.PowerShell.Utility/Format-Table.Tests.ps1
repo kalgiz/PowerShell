@@ -2,7 +2,7 @@
 # Licensed under the MIT License.
 Describe "Format-Table" -Tags "CI" {
         It "my test" {
-            $result = @(1,2) | Format-Table
+            $result = @{'test'=1,2} | Format-Table
             $resultStr = $result | Out-String
             Write-Host "writing"
             Write-Host $resultStr
