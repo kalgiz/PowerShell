@@ -85,7 +85,10 @@ Describe "PSVersionTable" -Tags "CI" {
     }
 
     It "Verify `$PSVersionTable is ordered and 'PSVersion' is on first place" {
-        Write-Host "PSversiontable in test $PSVersiontable $PSVersiontable.PSVersion  $PSHome"
+        Write-Host "PSversiontable in test"
+        Write-Host $PSVersiontable
+        Write-Host $PSVersiontable.PSVersion
+        Write-Host PSHome
 
 
         $PSVersionName = "PSVersion"

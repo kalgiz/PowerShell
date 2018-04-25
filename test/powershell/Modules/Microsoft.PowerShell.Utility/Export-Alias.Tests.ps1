@@ -102,6 +102,7 @@ Describe "Export-Alias DRT Unit Tests" -Tags "CI" {
 		}
 		else
 		{
+			Write-Host "Set read-only"
 			chmod 444 $fulltestpath
 		}
 
