@@ -88,7 +88,7 @@ Describe "PSVersionTable" -Tags "CI" {
         Write-Host "PSversiontable in test"
         Write-Host $PSVersiontable
         Write-Host $PSVersiontable.PSVersion
-        Write-Host PSHome
+        Write-Host $PSHome
 
 
         $PSVersionName = "PSVersion"
