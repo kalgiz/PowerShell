@@ -31,18 +31,18 @@ Describe "Format-Table" -Tags "CI" {
                 $info = @{}
                 $info.array = $al
                 $result = $info | Format-Table | Out-String
-                $result | Should -Match "array\s+{0, 1, 2, 3...}"
                 Write-Host "writing"
                 Write-Host $result
+                $result | Should -Match "array\s+{0, 1, 2, 3...}"
         }
 
         It "Format-Table with Negative Count should work" {
                 $FormatEnumerationLimit = -1
                 $result = Format-Table -inputobject @{'test'= 1, 2}
                 $resultStr = $result | Out-String
-                $resultStr | Should -Match "test\s+{1, 2}"
                 Write-Host "writing"
                 Write-Host $resultStr
+                $resultStr | Should -Match "test\s+{1, 2}"
         }
 
         # Pending on issue#888
@@ -50,9 +50,9 @@ Describe "Format-Table" -Tags "CI" {
                 $FormatEnumerationLimit = 0
                 $result = Format-Table -inputobject @{'test'= 1, 2}
                 $resultStr = $result | Out-String
-                $resultStr | Should -Match "test\s+{...}"
                 Write-Host "writing"
                 Write-Host $resultStr
+                $resultStr | Should -Match "test\s+{...}"
         }
 
         It "Format-Table with Less Count should work" {
