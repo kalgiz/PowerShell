@@ -1199,8 +1199,11 @@ Restore the module to '$Pester' by running:
                 {
                     $command += "|Export-Clixml -Path '$passThruFile' -Force"
 
+                    # TODO: remove debug
+                    Write-Host "before check for sudo"
                     $passThruCommand = {& $powershell -noprofile -c $command }
                     if ($Sudo.IsPresent) {
+                        Write-Host "Sudo is present"
                         $passThruCommand =  {& sudo $powershell -noprofile -c $command }
                     }
 

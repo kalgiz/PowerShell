@@ -162,10 +162,6 @@ function Invoke-PSBootstrap {
     # Make sure we have all the tags
     Sync-PSTags -AddRemoteIfMissing
     Start-PSBootstrap -Package:$createPackages
-    # TODO: Debug loggs to be deleted.
-    Write-Host "Version table!!!!"
-    Write-Host $PSVersionTable
-    Write-Host $PSHOME
 }
 
 function Invoke-PSBuild {
@@ -180,17 +176,9 @@ function Invoke-PSBuild {
     finally{
         $ProgressPreference = $originalProgressPreference
     }
-    Write-Host "PSVersion: $PSVersionTable.PSVersion"
-    Write-Host "PSHome: $PSHOME"
-    Write-Host "PWD: $pwd"
 }
 
 function Invoke-PSTest {
-    # TODO Debug loggs to delete later
-    Write-Host "PSVersion: $PSVersionTable.PSVersion"
-    Write-Host "PSHome: $PSHOME"
-    Write-Host "PWD: $pwd"
-
     $testResultsNoSudo = "$pwd/TestResultsNoSudo.xml"
     $testResultsSudo = "$pwd/TestResultsSudo.xml"
     $output = Split-Path -Parent (Get-PSOutput -Options (New-PSOptions))
@@ -222,21 +210,19 @@ function Invoke-PSTest {
         Remove-Item -force ${telemetrySemaphoreFilepath}
     }
 
-    $IsElevated = $false
     # Running tests which do not require sudo.
     $pesterPassThruNoSudoObject = Start-PSPester @pesterParam
 
     # Running tests, which require sudo.
-    $IsElevated = $false
-    $pesterParam['Tag'] = @('RequireSudoOnUnix')
-    $pesterParam['ExcludeTag'] = @()
-    $pesterParam['Sudo'] = $true
-    $pesterParam['OutputFile'] = $testResultsSudo
-    $pesterPassThruSudoObject = Start-PSPester @pesterParam
+    # $pesterParam['Tag'] = @('RequireSudoOnUnix')
+    # $pesterParam['ExcludeTag'] = @()
+    # $pesterParam['Sudo'] = $true
+    # $pesterParam['OutputFile'] = $testResultsSudo
+    # $pesterPassThruSudoObject = Start-PSPester @pesterParam
 
     # Determine whether the build passed
     try {
-        @($pesterPassThruNoSudoObject, $pesterPassThruSudoObject) | ForEach-Object { Test-PSPesterResults -ResultObject $_ }
+        @($pesterPassThruNoSudoObject) | ForEach-Object { Test-PSPesterResults -ResultObject $_ }
     }
     catch {}
 
