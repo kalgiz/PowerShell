@@ -92,7 +92,7 @@ Describe "PSVersionTable" -Tags "CI" {
 
 
         $PSVersionName = "PSVersion"
-        $keys1 = ($PSVersionTable | Format-Table -HideTableHeaders -Property Name | Out-String -Width 80) -split [System.Environment]::NewLine | Where-Object {$_} | ForEach-Object {$_.Trim()}
+        $keys1 = ($PSVersionTable | Format-Table -HideTableHeaders -Property Name | Out-String -Width 120) -split [System.Environment]::NewLine | Where-Object {$_} | ForEach-Object {$_.Trim()}
 
         Write-Host $keys1.count
 
@@ -121,7 +121,7 @@ Describe "PSVersionTable" -Tags "CI" {
             $VersionValue = $PSVersionTable["PSVersion"]
             $PSVersionTable.Remove("PSVersion")
 
-            $keys1 = ($PSVersionTable | Format-Table -HideTableHeaders -Property Name | Out-String -Width 80) -split [System.Environment]::NewLine | Where-Object {$_} | ForEach-Object {$_.Trim()}
+            $keys1 = ($PSVersionTable | Format-Table -HideTableHeaders -Property Name | Out-String -Width 120) -split [System.Environment]::NewLine | Where-Object {$_} | ForEach-Object {$_.Trim()}
             $keys1[0] | Should -Be "PSEdition"
             $keys1.Length | Should -Be $PSVersionTable.Count
 
@@ -138,7 +138,7 @@ Describe "PSVersionTable" -Tags "CI" {
             $EditionValue = $PSVersionTable["PSEdition"]
             $PSVersionTable.Remove("PSEdition")
 
-            $keys1 = ($PSVersionTable | Format-Table -HideTableHeaders -Property Name | Out-String -Width 80) -split [System.Environment]::NewLine | Where-Object {$_} | ForEach-Object {$_.Trim()}
+            $keys1 = ($PSVersionTable | Format-Table -HideTableHeaders -Property Name | Out-String -Width 120) -split [System.Environment]::NewLine | Where-Object {$_} | ForEach-Object {$_.Trim()}
             $keys1[0] | Should -Be "PSVersion"
             $keys1.Length | Should -Be $PSVersionTable.Count
 
@@ -157,7 +157,7 @@ Describe "PSVersionTable" -Tags "CI" {
             $PSVersionTable.Remove("PSVersion")
             $PSVersionTable.Remove("PSEdition")
 
-            $keys1 = ($PSVersionTable | Format-Table -HideTableHeaders -Property Name | Out-String -Width 80) -split [System.Environment]::NewLine | Where-Object {$_} | ForEach-Object {$_.Trim()}
+            $keys1 = ($PSVersionTable | Format-Table -HideTableHeaders -Property Name | Out-String -Width 120) -split [System.Environment]::NewLine | Where-Object {$_} | ForEach-Object {$_.Trim()}
             $keys1.Length | Should -Be $PSVersionTable.Count
 
             $keys1sortedlast = $keys1 | Sort-Object
