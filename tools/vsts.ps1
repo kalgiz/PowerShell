@@ -171,7 +171,7 @@ function Invoke-PSBuild {
     $originalProgressPreference = $ProgressPreference
     $ProgressPreference = 'SilentlyContinue'
     try {
-        Start-PSBuild -CrossGen -PSModuleRestore -CI -ReleaseTag $releaseTag
+        Start-PSBuild -CrossGen -PSModuleRestore -CI -ReleaseTag $releaseTag -Configuration 'Release'
     }
     finally{
         $ProgressPreference = $originalProgressPreference
