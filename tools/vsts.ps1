@@ -218,11 +218,11 @@ function Invoke-PSTest {
     $pesterPassThruNoSudoObject = Start-PSPester @pesterParam
 
     # Running tests, which require sudo.
-    # $pesterParam['Tag'] = @('RequireSudoOnUnix')
-    # $pesterParam['ExcludeTag'] = @()
-    # $pesterParam['Sudo'] = $true
-    # $pesterParam['OutputFile'] = $testResultsSudo
-    # $pesterPassThruSudoObject = Start-PSPester @pesterParam
+    $pesterParam['Tag'] = @('RequireSudoOnUnix')
+    $pesterParam['ExcludeTag'] = @()
+    $pesterParam['Sudo'] = $true
+    $pesterParam['OutputFile'] = $testResultsSudo
+    $pesterPassThruSudoObject = Start-PSPester @pesterParam
 
     # Determine whether the build passed
     try {
