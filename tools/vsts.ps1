@@ -179,10 +179,6 @@ function Invoke-PSBuild {
 }
 
 function Invoke-PSTest {
-    Write-Host "Checking console size:"
-    $result =  [console]::WindowWidth
-    Write-Host $result
-
     $testResultsNoSudo = "$pwd/TestResultsNoSudo.xml"
     $testResultsSudo = "$pwd/TestResultsSudo.xml"
     $output = Split-Path -Parent (Get-PSOutput -Options (New-PSOptions))
