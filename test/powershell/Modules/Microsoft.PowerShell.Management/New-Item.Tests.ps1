@@ -117,6 +117,33 @@ Describe "New-Item" -Tags "CI" {
         $fileInfo.Target | Should -BeNullOrEmpty
         $fileInfo.LinkType | Should -BeExactly "HardLink"
     }
+
+    It "Should create a file at the root of the drive while the current working directory is not the root" {
+        try {
+            New-Item -Name $testfolder -Path "TestDrive:\" -ItemType directory > $null
+            Push-Location -Path "TestDrive:\$testfolder"
+            New-Item -Name $testfile -Path "TestDrive:\" -ItemType file > $null
+            $FullyQualifiedFile | Should -Exist
+        }
+        finally {
+            Pop-Location
+        }
+    }
+
+    It "Should create a folder at the root of the drive while the current working directory is not the root" {
+        $testfolder2 = "newDirectory2"
+        $FullyQualifiedFolder2 = Join-Path -Path $tmpDirectory -ChildPath $testfolder2
+
+        try {
+            New-Item -Name $testfolder -Path "TestDrive:\" -ItemType directory > $null
+            Push-Location -Path "TestDrive:\$testfolder"
+            New-Item -Name $testfolder2 -Path "TestDrive:\" -ItemType directory > $null
+            $FullyQualifiedFolder2 | Should -Exist
+        }
+        finally {
+            Pop-Location
+        }
+    }
 }
 
 # More precisely these tests require SeCreateSymbolicLinkPrivilege.
@@ -177,6 +204,13 @@ Describe "New-Item with links" -Tags @('CI', 'RequireAdminOnWindows') {
 
         # Remove the link explicitly to avoid broken symlink issue
         Remove-Item $FullyQualifiedLink -Force
+    }
+
+    It "Should error correctly when failing to create a symbolic link" -Skip:($IsWindows -or $IsElevated) {
+        Write-Host "Iselevated: $IsElevated"
+        # This test expects that /sbin exists but is not writable by the user
+        { New-Item -ItemType SymbolicLink -Path "/sbin/powershell-test" -Target $FullyQualifiedFolder -ErrorAction Stop } |
+		Should -Throw -ErrorId "NewItemSymbolicLinkElevationRequired,Microsoft.PowerShell.Commands.NewItemCommand"
     }
 
     It "New-Item -ItemType SymbolicLink should understand directory path ending with slash" {
