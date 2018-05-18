@@ -180,10 +180,10 @@ function Invoke-PSBuild {
 }
 
 function Invoke-PSTest {
+    Restore-PSOptions
     $testResultsNoSudo = "$pwd/TestResultsNoSudo.xml"
     $testResultsSudo = "$pwd/TestResultsSudo.xml"
     $output = Split-Path -Parent (Get-PSOutput -Options (New-PSOptions))
-    Restore-PSOptions
     $pesterParam = @{
         'binDir'         = $output
         'PassThru'       = $true
